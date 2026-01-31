@@ -43,7 +43,7 @@ const hero = {
   y: canvas.height - 70,
   width: 64,
   height: 64,
-  speed: 280,
+  speed: 320,
 };
 
 const bullets = [];
@@ -113,8 +113,20 @@ function resetGame() {
 
 function resizeCanvas() {
   const maxWidth = 960;
-  const targetWidth = Math.min(maxWidth, Math.floor(window.innerWidth * 0.96));
-  const targetHeight = Math.floor(targetWidth * 0.625);
+  const maxHeight = 600;
+  const hud = document.querySelector(".hud");
+  const footer = document.querySelector(".footer");
+  const verticalPadding = window.innerWidth <= 520 ? 28 : 48;
+  const availableHeight =
+    window.innerHeight -
+    (hud ? hud.offsetHeight : 0) -
+    (footer ? footer.offsetHeight : 0) -
+    verticalPadding;
+
+  const availableWidth = Math.min(maxWidth, Math.floor(window.innerWidth * 0.96));
+  const targetHeight = Math.max(360, Math.min(maxHeight, Math.floor(availableHeight)));
+  const targetWidth = Math.min(availableWidth, Math.floor(targetHeight * 1.6));
+
   canvas.width = targetWidth;
   canvas.height = targetHeight;
   hero.x = Math.min(hero.x, canvas.width - hero.width / 2 - 16);
@@ -591,6 +603,24 @@ canvas.addEventListener("touchmove", (event) => {
 canvas.addEventListener("touchend", () => {
   keys.left = false;
   keys.right = false;
+});
+
+const touchButtons = document.querySelectorAll(".touch-btn");
+touchButtons.forEach((btn) => {
+  const dir = btn.dataset.dir;
+  const setDir = (value) => {
+    if (dir === "left") keys.left = value;
+    if (dir === "right") keys.right = value;
+  };
+
+  btn.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    if (!state.running) startGame();
+    setDir(true);
+  });
+  btn.addEventListener("pointerup", () => setDir(false));
+  btn.addEventListener("pointercancel", () => setDir(false));
+  btn.addEventListener("pointerleave", () => setDir(false));
 });
 
 window.addEventListener("resize", () => {
