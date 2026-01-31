@@ -74,11 +74,11 @@ function spawnWave() {
   invaders.length = 0;
   const rows = 3 + Math.min(Math.floor((state.wave - 1) / 2), 3);
   const cols = 6;
-  const desiredSpacingX = 96 * layoutScale;
+  const desiredSpacingX = 112 * layoutScale;
   const minSpacingX = 48 * layoutScale;
   const maxSpacingX = (canvas.width - 80 * layoutScale) / (cols - 1);
   const spacingX = Math.max(minSpacingX, Math.min(desiredSpacingX, maxSpacingX));
-  const spacingY = 54 * layoutScale;
+  const spacingY = 60 * layoutScale;
   const offsetX = Math.max(20 * layoutScale, (canvas.width - (cols - 1) * spacingX) / 2);
   const offsetY = 40 * layoutScale;
 
@@ -87,8 +87,8 @@ function spawnWave() {
       invaders.push({
         x: offsetX + col * spacingX,
         y: offsetY + row * spacingY,
-        width: 64 * layoutScale,
-        height: 64 * layoutScale,
+        width: 78 * layoutScale,
+        height: 78 * layoutScale,
         alive: true,
       });
     }
@@ -137,10 +137,10 @@ function resizeCanvas() {
   canvas.style.width = `${targetWidth}px`;
   canvas.style.height = `${targetHeight}px`;
   layoutScale = Math.min(canvas.width / 960, canvas.height / 600);
-  layoutScale = Math.max(0.4, layoutScale);
+  layoutScale = Math.max(0.45, layoutScale);
 
-  hero.width = 111 * layoutScale;
-  hero.height = 111 * layoutScale;
+  hero.width = 120 * layoutScale;
+  hero.height = 120 * layoutScale;
   hero.speed = 320 * layoutScale;
   hero.x = Math.min(hero.x, canvas.width - hero.width / 2 - 16);
   hero.y = canvas.height - 70 * layoutScale;
