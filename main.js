@@ -73,8 +73,8 @@ function createStars(count) {
 function spawnWave() {
   invaders.length = 0;
   const rows = 3 + Math.min(Math.floor((state.wave - 1) / 2), 3);
-  const cols = 6;
-  const desiredSpacingX = 118 * layoutScale;
+  const cols = 8;
+  const desiredSpacingX = 92 * layoutScale;
   const minSpacingX = 48 * layoutScale;
   const maxSpacingX = (canvas.width - 80 * layoutScale) / (cols - 1);
   const spacingX = Math.max(minSpacingX, Math.min(desiredSpacingX, maxSpacingX));
