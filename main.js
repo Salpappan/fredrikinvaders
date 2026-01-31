@@ -425,11 +425,6 @@ function drawInvaders() {
   invaders.forEach((invader) => {
     if (!invader.alive) return;
     drawAvatar(invaderImg, invader.x, invader.y, invader.width, invader.height);
-    ctx.strokeStyle = "rgba(0, 240, 255, 0.6)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(invader.x, invader.y, invader.width / 2 + 4, 0, Math.PI * 2);
-    ctx.stroke();
   });
 }
 
