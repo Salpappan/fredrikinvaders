@@ -73,8 +73,8 @@ function createStars(count) {
 function spawnWave() {
   invaders.length = 0;
   const rows = 3 + Math.min(Math.floor((state.wave - 1) / 2), 3);
-  const cols = 8;
-  const desiredSpacingX = 80 * layoutScale;
+  const cols = 6;
+  const desiredSpacingX = 96 * layoutScale;
   const minSpacingX = 48 * layoutScale;
   const maxSpacingX = (canvas.width - 80 * layoutScale) / (cols - 1);
   const spacingX = Math.max(minSpacingX, Math.min(desiredSpacingX, maxSpacingX));
@@ -87,8 +87,8 @@ function spawnWave() {
       invaders.push({
         x: offsetX + col * spacingX,
         y: offsetY + row * spacingY,
-        width: 42 * layoutScale,
-        height: 42 * layoutScale,
+        width: 64 * layoutScale,
+        height: 64 * layoutScale,
         alive: true,
       });
     }
@@ -139,8 +139,8 @@ function resizeCanvas() {
   layoutScale = Math.min(canvas.width / 960, canvas.height / 600);
   layoutScale = Math.max(0.4, layoutScale);
 
-  hero.width = 64 * layoutScale;
-  hero.height = 64 * layoutScale;
+  hero.width = 111 * layoutScale;
+  hero.height = 111 * layoutScale;
   hero.speed = 320 * layoutScale;
   hero.x = Math.min(hero.x, canvas.width - hero.width / 2 - 16);
   hero.y = canvas.height - 70 * layoutScale;
@@ -599,11 +599,17 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
+function isTouchInControlZone(touch, rect) {
+  const y = touch.clientY - rect.top;
+  return y >= rect.height * 0.67;
+}
+
 canvas.addEventListener("touchstart", (event) => {
   event.preventDefault();
   if (!state.running) startGame();
   const touch = event.touches[0];
   const rect = canvas.getBoundingClientRect();
+  if (!isTouchInControlZone(touch, rect)) return;
   const x = touch.clientX - rect.left;
   const mid = rect.width / 2;
   keys.left = x < mid;
@@ -614,6 +620,7 @@ canvas.addEventListener("touchmove", (event) => {
   event.preventDefault();
   const touch = event.touches[0];
   const rect = canvas.getBoundingClientRect();
+  if (!isTouchInControlZone(touch, rect)) return;
   const x = touch.clientX - rect.left;
   const mid = rect.width / 2;
   keys.left = x < mid;
