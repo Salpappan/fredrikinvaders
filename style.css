@@ -99,7 +99,10 @@ canvas#game {
 
 .touch-controls {
   position: absolute;
-  inset: 24px;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  height: 30%;
   display: none;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
@@ -118,11 +121,21 @@ canvas#game {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   opacity: 0.65;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .touch-btn:active {
   opacity: 1;
   border-color: rgba(125, 255, 106, 0.6);
+}
+
+.touch-btn::before {
+  content: attr(data-label);
+  display: block;
+  text-align: center;
 }
 
 .scanlines {
@@ -185,9 +198,14 @@ button {
     padding: 14px;
   }
   .scanlines,
-  .vignette,
-  .touch-controls {
+  .vignette {
     inset: 14px;
+  }
+  .touch-controls {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    height: 32%;
   }
   .touch-controls {
     display: grid;
