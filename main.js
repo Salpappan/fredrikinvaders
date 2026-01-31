@@ -58,6 +58,8 @@ const invaderImg = new Image();
 heroImg.src = ASSETS.hero;
 invaderImg.src = ASSETS.invader;
 
+let layoutScale = 1;
+
 function createStars(count) {
   return Array.from({ length: count }, () => ({
     x: Math.random() * canvas.width,
@@ -72,18 +74,18 @@ function spawnWave() {
   invaders.length = 0;
   const rows = 3 + Math.min(Math.floor((state.wave - 1) / 2), 3);
   const cols = 8;
-  const spacingX = 80;
-  const spacingY = 54;
+  const spacingX = 80 * layoutScale;
+  const spacingY = 54 * layoutScale;
   const offsetX = (canvas.width - (cols - 1) * spacingX) / 2;
-  const offsetY = 40;
+  const offsetY = 40 * layoutScale;
 
   for (let row = 0; row < rows; row += 1) {
     for (let col = 0; col < cols; col += 1) {
       invaders.push({
         x: offsetX + col * spacingX,
         y: offsetY + row * spacingY,
-        width: 42,
-        height: 42,
+        width: 42 * layoutScale,
+        height: 42 * layoutScale,
         alive: true,
       });
     }
@@ -102,7 +104,7 @@ function resetGame() {
   state.powerups.fast = 0;
   state.powerups.pierce = 0;
   hero.x = canvas.width / 2;
-  hero.y = canvas.height - 70;
+  hero.y = canvas.height - 70 * layoutScale;
   bullets.length = 0;
   enemyBullets.length = 0;
   particles.length = 0;
@@ -129,8 +131,16 @@ function resizeCanvas() {
 
   canvas.width = targetWidth;
   canvas.height = targetHeight;
+  canvas.style.width = `${targetWidth}px`;
+  canvas.style.height = `${targetHeight}px`;
+  layoutScale = Math.min(canvas.width / 960, canvas.height / 600);
+  layoutScale = Math.max(0.4, layoutScale);
+
+  hero.width = 64 * layoutScale;
+  hero.height = 64 * layoutScale;
+  hero.speed = 320 * layoutScale;
   hero.x = Math.min(hero.x, canvas.width - hero.width / 2 - 16);
-  hero.y = canvas.height - 70;
+  hero.y = canvas.height - 70 * layoutScale;
   stars.length = 0;
   stars.push(...createStars(120));
 }
@@ -145,14 +155,15 @@ function fireBullet() {
   const sizeScale = state.powerups.big > 0 ? 1.8 : 1;
   const baseSpeed = state.powerups.fast > 0 ? 560 : 420;
   const pierce = state.powerups.pierce > 0 ? 2 : 0;
-  const shots = state.powerups.triple > 0 ? [-16, 0, 16] : [0];
+  const spread = 16 * layoutScale;
+  const shots = state.powerups.triple > 0 ? [-spread, 0, spread] : [0];
 
   shots.forEach((offset) => {
     bullets.push({
       x: hero.x + offset,
       y: hero.y - hero.height / 2,
-      width: 6 * sizeScale,
-      height: 16 * sizeScale,
+      width: 6 * sizeScale * layoutScale,
+      height: 16 * sizeScale * layoutScale,
       speed: baseSpeed,
       pierce,
     });
@@ -251,7 +262,7 @@ function updateInvaders(dt) {
   if (hitEdge) {
     invaderDir *= -1;
     invaders.forEach((invader) => {
-      invader.y += state.invaderStepDown;
+      invader.y += state.invaderStepDown * layoutScale;
     });
   }
 }
@@ -266,9 +277,9 @@ function maybeFireInvader(dt) {
   enemyBullets.push({
     x: shooter.x,
     y: shooter.y + shooter.height / 2,
-    width: 6,
-    height: 16,
-    speed: 220 + state.wave * 10,
+    width: 6 * layoutScale,
+    height: 16 * layoutScale,
+    speed: (220 + state.wave * 10) * layoutScale,
   });
 }
 
@@ -279,8 +290,8 @@ function maybeDropPowerup(invader) {
   powerups.push({
     x: invader.x,
     y: invader.y,
-    size: 22,
-    speed: 90,
+    size: 22 * layoutScale,
+    speed: 90 * layoutScale,
     kind,
   });
 }
@@ -345,7 +356,7 @@ function checkCollisions() {
   }
 
   const lowest = invaders.filter((inv) => inv.alive).reduce((max, inv) => Math.max(max, inv.y), 0);
-  if (lowest > hero.y - 20) {
+  if (lowest > hero.y - 20 * layoutScale) {
     state.running = false;
   }
 }
