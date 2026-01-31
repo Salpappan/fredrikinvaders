@@ -74,9 +74,12 @@ function spawnWave() {
   invaders.length = 0;
   const rows = 3 + Math.min(Math.floor((state.wave - 1) / 2), 3);
   const cols = 8;
-  const spacingX = 80 * layoutScale;
+  const desiredSpacingX = 80 * layoutScale;
+  const minSpacingX = 48 * layoutScale;
+  const maxSpacingX = (canvas.width - 80 * layoutScale) / (cols - 1);
+  const spacingX = Math.max(minSpacingX, Math.min(desiredSpacingX, maxSpacingX));
   const spacingY = 54 * layoutScale;
-  const offsetX = (canvas.width - (cols - 1) * spacingX) / 2;
+  const offsetX = Math.max(20 * layoutScale, (canvas.width - (cols - 1) * spacingX) / 2);
   const offsetY = 40 * layoutScale;
 
   for (let row = 0; row < rows; row += 1) {
@@ -255,7 +258,8 @@ function updateInvaders(dt) {
   invaders.forEach((invader) => {
     if (!invader.alive) return;
     invader.x += invaderDir * speed * dt;
-    if (invader.x > canvas.width - 50 || invader.x < 50) {
+    const margin = Math.max(24 * layoutScale, invader.width / 2);
+    if (invader.x > canvas.width - margin || invader.x < margin) {
       hitEdge = true;
     }
   });
@@ -357,7 +361,9 @@ function checkCollisions() {
 
   const lowest = invaders.filter((inv) => inv.alive).reduce((max, inv) => Math.max(max, inv.y), 0);
   if (lowest > hero.y - 20 * layoutScale) {
+    state.lives = 0;
     state.running = false;
+    updateHud();
   }
 }
 
@@ -547,6 +553,9 @@ function update(time) {
 
 function startGame() {
   if (!state.running) {
+    if (state.lives <= 0) {
+      resetGame();
+    }
     state.running = true;
     state.paused = false;
     if (invaders.length === 0) {
