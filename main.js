@@ -74,11 +74,11 @@ function spawnWave() {
   invaders.length = 0;
   const rows = 3 + Math.min(Math.floor((state.wave - 1) / 2), 3);
   const cols = 6;
-  const desiredSpacingX = 112 * layoutScale;
+  const desiredSpacingX = 118 * layoutScale;
   const minSpacingX = 48 * layoutScale;
   const maxSpacingX = (canvas.width - 80 * layoutScale) / (cols - 1);
   const spacingX = Math.max(minSpacingX, Math.min(desiredSpacingX, maxSpacingX));
-  const spacingY = 60 * layoutScale;
+  const spacingY = 70 * layoutScale;
   const offsetX = Math.max(20 * layoutScale, (canvas.width - (cols - 1) * spacingX) / 2);
   const offsetY = 40 * layoutScale;
 
@@ -87,8 +87,8 @@ function spawnWave() {
       invaders.push({
         x: offsetX + col * spacingX,
         y: offsetY + row * spacingY,
-        width: 78 * layoutScale,
-        height: 78 * layoutScale,
+        width: 72 * layoutScale,
+        height: 72 * layoutScale,
         alive: true,
       });
     }
@@ -107,7 +107,7 @@ function resetGame() {
   state.powerups.fast = 0;
   state.powerups.pierce = 0;
   hero.x = canvas.width / 2;
-  hero.y = canvas.height - 70 * layoutScale;
+  hero.y = canvas.height - 85 * layoutScale;
   bullets.length = 0;
   enemyBullets.length = 0;
   particles.length = 0;
