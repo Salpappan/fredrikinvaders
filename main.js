@@ -78,7 +78,7 @@ function spawnWave() {
   const minSpacingX = 48 * layoutScale;
   const maxSpacingX = (canvas.width - 80 * layoutScale) / (cols - 1);
   const spacingX = Math.max(minSpacingX, Math.min(desiredSpacingX, maxSpacingX));
-  const spacingY = 70 * layoutScale;
+  const spacingY = 78 * layoutScale;
   const offsetX = Math.max(20 * layoutScale, (canvas.width - (cols - 1) * spacingX) / 2);
   const offsetY = 40 * layoutScale;
 
