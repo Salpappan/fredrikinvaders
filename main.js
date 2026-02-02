@@ -657,9 +657,38 @@ resetBtn.addEventListener("click", () => {
   resetGame();
 });
 
+let heroReady = false;
+let invaderReady = false;
+
+function maybeInit() {
+  if (initialized) return;
+  if (heroReady && invaderReady) {
+    init();
+  }
+}
+
 heroImg.onload = () => {
-  invaderImg.onload = () => init();
+  heroReady = true;
+  maybeInit();
+};
+invaderImg.onload = () => {
+  invaderReady = true;
+  maybeInit();
 };
 
-heroImg.onerror = () => init();
-invaderImg.onerror = () => init();
+heroImg.onerror = () => {
+  heroReady = true;
+  maybeInit();
+};
+invaderImg.onerror = () => {
+  invaderReady = true;
+  maybeInit();
+};
+
+if (heroImg.complete) {
+  heroReady = true;
+}
+if (invaderImg.complete) {
+  invaderReady = true;
+}
+maybeInit();
