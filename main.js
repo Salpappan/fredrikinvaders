@@ -318,7 +318,7 @@ function checkCollisions() {
         } else {
           bullets.splice(i, 1);
         }
-        state.score += 120;
+        state.score += 100;
         addExplosion(invader.x, invader.y, "rgba(0, 240, 255, 0.9)");
         maybeDropPowerup(invader);
         return;
